@@ -5,8 +5,6 @@ meshConfig:
     proxyMetadata: {}
     tracing:
       sampling: 100
-      datadog:
-        address: datadog.datadog.svc.cluster.local:8126
 
 global:
   imagePullPolicy: Always

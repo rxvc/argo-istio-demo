@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: istio-istiod
+  name: istiod
   namespace: argocd
 spec:
-  project: istio
+  project: default
   destination:
     server: https://kubernetes.default.svc
     namespace: istio-system

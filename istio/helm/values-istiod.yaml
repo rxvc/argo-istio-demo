@@ -1,0 +1,87 @@
+meshConfig:
+  enablePrometheusMerge: true
+  enableTracing: true
+  defaultConfig:
+    proxyMetadata: {}
+    tracing:
+      sampling: 100
+      datadog:
+        address: datadog.datadog.svc.cluster.local:8126
+
+global:
+  imagePullPolicy: Always
+  istioNamespace: istio-system
+  configValidation: true
+  defaultPodDisruptionBudget:
+    enabled: true
+  jwtPolicy: third-party-jwt
+  logAsJson: true
+  logging:
+    level: default:info
+  mountMtlsCerts: false
+  multiCluster:
+    enabled: false
+  proxy:
+    autoInject: enabled
+    clusterDomain: cluster.local
+    componentLogLevel: misc:error
+    enableCoreDump: false
+    image: proxyv2
+    includeIPRanges: '*'
+    logLevel: warning
+    privileged: false
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 1024Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    statusPort: 15020
+    tracer: datadog
+  proxy_init:
+    image: proxyv2
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 1024Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+  sds:
+    token:
+      aud: istio-ca
+  sts:
+    servicePort: 0
+  tracer:
+    datadog: {}
+    lightstep: {}
+    stackdriver: {}
+    zipkin: {}
+
+pilot:
+  autoscaleEnabled: true
+  autoscaleMax: 5
+  autoscaleMin: 1
+  configMap: true
+  cpu:
+    targetAverageUtilization: 80
+  image: pilot
+  keepaliveMaxServerConnectionAge: 30m
+  nodeSelector: {}
+  podLabels: {}
+  replicaCount: 1
+  traceSampling: 1
+  env:
+    - name: PILOT_TRACE_SAMPLING
+      value: "100"
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      cpu: 2000m
+      memory: 2024Mi
+  podDisruptionBudget:
+    enabled: true
+    maxUnavailable: 1

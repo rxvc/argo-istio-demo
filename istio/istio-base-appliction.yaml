@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: istio-base
   namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
@@ -20,8 +18,3 @@ spec:
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
-  ignoreDifferences:
-  - group: admissionregistration.k8s.io
-    kind: ValidatingWebhookConfiguration
-    jsonPointers:
-    - /webhooks/0/failurePolicy

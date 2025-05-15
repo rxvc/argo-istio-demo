@@ -1,0 +1,26 @@
+global:
+  istioNamespace: istio-ingress
+
+name: istio-ingressgateway
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 128Mi
+  limits:
+    cpu: 2000m
+    memory: 2024Mi
+
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+
+autoscaling:
+  enabled: true
+
+service:
+  type: LoadBalancer
+  # annotations:
+  #   cloud.google.com/load-balancer-type: "Internal"
+  #   networking.gke.io/internal-load-balancer-allow-global-access: "true"
+  #   cloud.google.com/backend-config: '{"default": "istio-ingress-backendconfig"}'

@@ -1,28 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: istio-gateway
+  name: istiod
   namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
+  project: default
   destination:
     server: https://kubernetes.default.svc
     namespace: istio-system
-  project: default
   source:
+    repoURL: https://istio-release.storage.googleapis.com/charts   # Required even when using 'sources'
     chart: gateway
-    repoURL: https://istio-release.storage.googleapis.com/charts
     targetRevision: 1.26.0
-    # helm:
-    #   values: |
-    #     profile: ambient
+    helm:
+      valueFiles:
+        - $values//istio/helm/values-ingress-gateway.yaml
+  sources:
+    - repoURL: https://istio-release.storage.googleapis.com/charts
+      chart: istiod
+      targetRevision: 1.26.0
+    - repoURL: https://github.com/rxvc/argo-istio-demo
+      targetRevision: main
+      ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-  ignoreDifferences:
-  - group: admissionregistration.k8s.io
-    kind: ValidatingWebhookConfiguration
-    jsonPointers:
-    - /webhooks/0/failurePolicy
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-istiod
+  namespace: argocd
+spec:
+  project: istio
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-system
+  sources:
+    - repoURL: https://istio-release.storage.googleapis.com/charts
+      chart: istiod
+      targetRevision: 1.26.0
+    - repoURL: https://github.com/rxvc/argo-istio-demo
+      targetRevision: main
+      ref: values
+  source:
+    helm:
+      valueFiles:
+        - $values//istio/helm/values-istiod.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

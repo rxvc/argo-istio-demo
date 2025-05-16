@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: istiod
+  name: istio-ingressgateway
   namespace: argocd
 spec:
   project: default
@@ -10,14 +10,14 @@ spec:
     namespace: istio-system
   source:
     repoURL: https://istio-release.storage.googleapis.com/charts   # Required even when using 'sources'
-    chart: istiod
+    chart: gateway
     targetRevision: 1.26.0
     helm:
       valueFiles:
-        - $values//istio/helm/values-istiod.yaml
+        - $values//istio/helm/sidecard/values-ingressgateway.yaml
   sources:
     - repoURL: https://istio-release.storage.googleapis.com/charts
-      chart: istiod
+      chart: gateway
       targetRevision: 1.26.0
     - repoURL: https://github.com/rxvc/argo-istio-demo
       targetRevision: main

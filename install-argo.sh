@@ -1,12 +1,12 @@
 #!/bin/bash
 
-ARGO_HELM_CHART_VERSION=8.0.2
+ARGO_HELM_CHART_VERSION=9.0.3
 
 #install argo cd helm chart
 helm repo add argocd https://argoproj.github.io/argo-helm 
 helm repo update
 kubectl create namespace argocd
-helm upgrade argocd argo-cd/argo-cd --version 9.0.3 --install --namespace argocd --version $ARGO_HELM_CHART_VERSION --values argo/helm/values.yaml
+helm upgrade argocd argo-cd/argo-cd --install --namespace argocd --version $ARGO_HELM_CHART_VERSION --values argo/helm/values.yaml
 
 # check status
 kubectl -n argocd rollout status deploy/argocd-applicationset-controller
